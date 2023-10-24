@@ -1,0 +1,15 @@
+---
+- name: Ensure NTP is installed and running
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install NTP
+      apt:
+        name: ntp
+        state: present
+
+    - name: Enable and start NTP service
+      service:
+        name: ntp
+        state: started
+        enabled: yes
