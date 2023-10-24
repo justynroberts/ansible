@@ -1,0 +1,9 @@
+  hosts: kubernetes_masters
+  tasks:
+    - name: Get node status
+      command: kubectl get nodes
+      register: node_status
+
+    - name: Alert if any node is not in 'Ready' state
+      command: echo "A Kubernetes node is not in a Ready state!"  # Replace with your alerting mechanism
+      when: "'NotReady' in node_status.stdout"
