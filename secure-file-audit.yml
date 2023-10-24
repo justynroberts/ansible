@@ -1,14 +1,18 @@
 ---
-- name: Find all SUID files
-  find:
-    paths: "/"
-    file_type: file
-    hidden: yes
-    patterns: '*'
-    depth: 3  # Adjust depth as needed
-  register: suid_files
-  become: yes
+- hosts: all  # or specify your target hosts/group
+  become: yes  # to run tasks as sudo
+  tasks:
+    - name: Find all SUID files
+      find:
+        paths: "/"
+        file_type: file
+        hidden: yes
+        patterns: '*'
+        depth: 3  # Adjust depth as needed
+      register: suid_files
 
-- name: Filter SUID files
-  set_fact:
-    actual_suid_files: "{{ suid_files.files | selectattr('mode', 'match', '^4') | list }}"
+    - name: Display SUID files
+      debug:
+        msg: "{{ item.path }}"
+      with_items: "{{ suid_files.files }}"
+      when: "'4' in item.mode"
