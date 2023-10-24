@@ -1,9 +1,9 @@
 - name: System Health Check
   hosts: all
   tasks:
-    - name: Ensure web service is running
+    - name: Ensure docker is running
       service:
-        name: nginx  # Or the name of your web service
+        name: docker  # Or the name of your web service
         state: started
 
     - name: Ensure database service is running
