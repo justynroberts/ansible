@@ -1,17 +1,14 @@
 ---
-- name: Audit SUID and SGID files
-  hosts: all
+- name: Find all SUID files
+  find:
+    paths: "/"
+    file_type: file
+    hidden: yes
+    patterns: '*'
+    depth: 3  # Adjust depth as needed
+  register: suid_files
   become: yes
-  tasks:
-    - name: Find all SUID files
-      find:
-        paths: "/"
-        file_type: file
-        hidden: yes
-        setype: file_suid
-      register: suid_files
 
-    - name: Display SUID files
-      debug:
-        msg: "SUID file found: {{ item.path }}"
-      with_items: "{{ suid_files.files }}"
+- name: Filter SUID files
+  set_fact:
+    actual_suid_files: "{{ suid_files.files | selectattr('mode', 'match', '^4') | list }}"
