@@ -1,0 +1,12 @@
+- name: System Health Check
+  hosts: all
+  tasks:
+    - name: Ensure web service is running
+      service:
+        name: nginx  # Or the name of your web service
+        state: started
+
+    - name: Ensure database service is running
+      service:
+        name: mysql  # Or the name of your database service
+        state: started
