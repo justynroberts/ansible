@@ -1,4 +1,4 @@
-  hosts: kubernetes_masters
+  hosts: all
   tasks:
     - name: Get node status
       command: kubectl get nodes
