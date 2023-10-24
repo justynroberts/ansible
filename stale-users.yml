@@ -1,0 +1,12 @@
+---
+- name: Check for unused users
+  hosts: all
+  become: yes
+  tasks:
+    - name: Find users who haven't logged in for 90 days
+      command: find /home -maxdepth 1 -type d -ctime +90
+      register: old_users
+
+    - name: Display old users
+      debug:
+        msg: "{{ old_users.stdout_lines }}"
